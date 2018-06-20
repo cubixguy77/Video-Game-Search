@@ -1,4 +1,4 @@
-package com.robsessions.videogamesearch.ui;
+package com.robsessions.videogamesearch.ui.viewmodel;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;

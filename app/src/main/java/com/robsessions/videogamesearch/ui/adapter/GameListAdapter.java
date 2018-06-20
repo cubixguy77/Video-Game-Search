@@ -1,4 +1,4 @@
-package com.robsessions.videogamesearch.ui;
+package com.robsessions.videogamesearch.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -25,7 +25,7 @@ public class GameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private GameList games;
     private final Context context;
 
-    GameListAdapter(GameList games, Context context){
+    public GameListAdapter(GameList games, Context context) {
         this.games = games;
         this.context = context;
     }
@@ -47,7 +47,7 @@ public class GameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
        return games.size();
     }
 
-    void setList(GameList games) {
+    public void setList(GameList games) {
         this.games = games;
         notifyDataSetChanged();
     }
@@ -62,7 +62,13 @@ public class GameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         void bind(Game game) {
-            Picasso.with(context).load(game.getImage().getImageUrl()).fit().into(game_image);
+            Picasso
+                .with(context)
+                .load(game.getImage().getImageUrl())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder_error)
+                .fit()
+                .into(game_image);
             title.setText(game.getTitle());
         }
     }

@@ -22,6 +22,9 @@ import android.widget.Toast;
 import com.robsessions.videogamesearch.Injection;
 import com.robsessions.videogamesearch.R;
 import com.robsessions.videogamesearch.network.GameList;
+import com.robsessions.videogamesearch.ui.adapter.GameListAdapter;
+import com.robsessions.videogamesearch.ui.viewmodel.GameViewModel;
+import com.robsessions.videogamesearch.ui.viewmodel.GameViewModelFactory;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -41,10 +44,13 @@ public class GameListFragment extends Fragment {
     @BindString(R.string.network_error) String networkError;
 
     private GameListAdapter gameListAdapter;
+    private LinearLayoutManager layoutManager;
     private GameViewModel viewModel;
     private Unbinder unbinder;
     private CharSequence query;
     private SearchView searchView;
+
+    private boolean loading = true;
 
     public GameListFragment() {}
 
@@ -64,7 +70,7 @@ public class GameListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setupListAdapter();
+        setupList();
         setupViewModel();
 
         if (savedInstanceState == null) {
@@ -80,10 +86,30 @@ public class GameListFragment extends Fragment {
         outState.putCharSequence(BUNDLE_KEY_QUERY, searchView.getQuery());
     }
 
-    private void setupListAdapter() {
+    private void setupList() {
         gameListAdapter = new GameListAdapter(new GameList(), getContext());
         list.setAdapter(gameListAdapter);
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        layoutManager = new LinearLayoutManager(getContext());
+        list.setLayoutManager(layoutManager);
+
+        /* Listen to scroll events -> when the user scrolls to the end of the list, get the next page of results */
+        list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) // scrolling down
+                {
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if (!loading && (visibleItemCount + pastVisibleItems) >= totalItemCount)
+                    {
+                        renderLoadingIndicator(true);
+                        viewModel.loadMore();
+                    }
+                }
+            }
+        });
     }
 
     private void setupViewModel() {
@@ -96,7 +122,7 @@ public class GameListFragment extends Fragment {
             gameListAdapter.setList(gameList);
             list.setVisibility(isEmpty ? View.INVISIBLE : View.VISIBLE);
             noGamesIndicator.setVisibility(isEmpty ? View.VISIBLE : View.INVISIBLE);
-            listLoadingProgressBar.hide();
+            renderLoadingIndicator(false);
         });
 
         /* subscribe to network errors */
@@ -104,18 +130,22 @@ public class GameListFragment extends Fragment {
     }
 
     private void performSearch(String query) {
-        listLoadingProgressBar.show();
+        renderLoadingIndicator(true);
         viewModel.search(query);
     }
 
     private void renderNetworkError() {
-        listLoadingProgressBar.hide();
+        renderLoadingIndicator(false);
         Toast.makeText(getContext(), networkError, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void renderLoadingIndicator(boolean isLoading) {
+        this.loading = isLoading;
+
+        if (isLoading)
+            listLoadingProgressBar.show();
+        else
+            listLoadingProgressBar.hide();
     }
 
     @Override
