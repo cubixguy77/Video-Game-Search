@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Video Game Search</string>
+    <string name="game_image">Game Image</string>
+    <string name="no_games">No games found. Please try again.</string>
+    <string name="search">Search</string>
+    <string name="network_error">There was a problem connecting to the network.</string>
 </resources>
