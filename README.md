@@ -1,6 +1,8 @@
 # Video Game Search
 Video Game Search is a native Android app that allows the user to search an extensive database of video games.  Users can filter the results by game name by typing in a search query.
 
+![Screenshot](screenshots/Screencap%201.png)
+
 ## Technical Details
 At a high level, the app consists of a single activity and a single fragments. I chose not to use an activity on its own as future enhancements of the app could involve implementing adding a detail screen, possibly displaying both at the same time.  When the app loads, the fragment gets an instance of the viewmodel (the factory either generates a new instance or returns an existing one if, say, the user just rotated their device).  The fragment then begins observing the list of games, as well as for network errors.  If the user just rotated their device, any previous query is restored.  Otherwise, a blank search is conducted which will result in fetching the newest games added to the GiantBomb API.
 
