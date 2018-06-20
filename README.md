@@ -21,6 +21,7 @@ The app has a number of optimizations in place to boost performance.
 *  **Retrofit**: for network calls
 *  **Gson**: for parsing the JSON, used by Retrofit
 *  **Butterknife**: for resource binding (ain't nobody got time for findViewById)
+*  **Picasso**: for image loading
 *  **Architecture Components**: for making life easier
 *  Testing: **JUnit** for unit testing, **Espresso** for UI testing
 *  Support libraries: Things like appcompat, RecyclerView, CardView
