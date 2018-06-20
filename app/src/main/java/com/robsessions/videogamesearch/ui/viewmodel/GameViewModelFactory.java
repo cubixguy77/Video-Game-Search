@@ -1,4 +1,4 @@
-package com.robsessions.videogamesearch.ui;
+package com.robsessions.videogamesearch.ui.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
@@ -13,7 +13,7 @@ public class GameViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final GameService gameService;
 
-    GameViewModelFactory(GameService gameService) {
+    public GameViewModelFactory(GameService gameService) {
         this.gameService = gameService;
     }
 

@@ -9,9 +9,9 @@ import retrofit2.http.Query;
  */
 public interface GameService {
 
-    @GET("/api/search?api_key=b6fbed01a4cb308be2ef201901707bddaed26132&format=json&resources=game&field_list=name,description,image")
-    Call<GameList> searchGames(@Query("query") String query);
+    @GET("/api/search?api_key=b6fbed01a4cb308be2ef201901707bddaed26132&format=json&resources=game&field_list=name,description,deck,image")
+    Call<GameList> searchGames(@Query("query") String query, @Query("page") int page);
 
-    @GET("/api/games?api_key=b6fbed01a4cb308be2ef201901707bddaed26132&format=json&resources=game&field_list=name,description,image&limit=10&sort=date_added:desc")
+    @GET("/api/games?api_key=b6fbed01a4cb308be2ef201901707bddaed26132&format=json&resources=game&field_list=name,deck,description,image&limit=10&sort=date_added:desc")
     Call<GameList> getLatestGames();
 }

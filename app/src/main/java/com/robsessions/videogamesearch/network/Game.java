@@ -16,6 +16,10 @@ public class Game {
     @Expose
     private String description;
 
+    @SerializedName("deck")
+    @Expose
+    private String shortDescription;
+
     @SerializedName("image")
     @Expose
     private Image image;
@@ -44,4 +48,11 @@ public class Game {
         this.image = image;
     }
 
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
 }
